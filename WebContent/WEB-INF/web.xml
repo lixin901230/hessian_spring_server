@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>hessian_1_server_spring</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+  <!-- Spring配置加载 -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:config/applicationContext-hessian.xml</param-value>
+  </context-param>
+  <!-- Spring容器监听 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <servlet>
+  	<servlet-name>remote</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<!-- 初始化加载hessian的bean配置：
+		默认加载方式：
+			默认加载 /WEB-INF/目录下的 xxxx_servlet.xml 配置文件（xxxx为servlet-name配置内容，如：此处为remote，则默认加载的配置文件名称为：remote-servlet.xml）
+		
+		手动指定加载（两种方式）：
+			1：通过配置DispatcherServlet父类FrameworkServlet的contextConfigLocation属性的值来指定hessian配置文件的全名，如：本示例配置路径为：config/applicationContext-hessian.xml
+			2：通过配置DispatcherServlet父类FrameworkServlet的namespace属性的值来指定hessian配置文件名称，如：本示例配置路径为：config/applicationContext-hessian.xml
+	-->
+  	<init-param>
+		<!-- 方式1：配置contextConfigLocation属性（常用） -->
+	   	<param-name>contextConfigLocation</param-name>
+	   	<param-value>/WEB-INF/classes/config/applicationContext-hessian.xml</param-value>
+     
+  		<!-- 方式2：配置namespace属性 -->
+<!--   		<param-name>namespace</param-name> -->
+<!--   		<param-value>config/applicationContext-hessian</param-value> -->
+  		
+		<load-on-startup>1</load-on-startup>
+	</init-param> 
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>remote</servlet-name>
+  	<url-pattern>/remote/*</url-pattern>
+  </servlet-mapping>
+</web-app>
